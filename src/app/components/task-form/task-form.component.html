@@ -1,0 +1,34 @@
+<div class="modal">
+  <div class="modal-content">
+    <h3>{{ isEdit ? 'Edit Task' : 'New Task' }}</h3>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <label>Assigned To</label>
+      <input formControlName="assignedTo" required />
+
+      <label>Status</label>
+      <select formControlName="status">
+        <option>Not Started</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+      </select>
+
+      <label>Due Date</label>
+      <input type="date" formControlName="dueDate" required />
+
+      <label>Priority</label>
+      <select formControlName="priority">
+        <option>Low</option>
+        <option>Normal</option>
+        <option>High</option>
+      </select>
+
+      <label>Comments</label>
+      <textarea formControlName="comments"></textarea>
+
+      <div class="actions">
+        <button type="button" (click)="cancel.emit()">Cancel</button>
+        <button type="submit" [disabled]="!taskForm.valid">Save</button>
+      </div>
+    </form>
+  </div>
+</div> 

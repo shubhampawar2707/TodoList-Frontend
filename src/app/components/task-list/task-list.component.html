@@ -1,0 +1,64 @@
+<div class="task-list-container">
+  <div class="header">
+    <h2>Tasks</h2>
+    <div>
+      <input type="text" placeholder="Search..." [(ngModel)]="searchTerm" (input)="applyFilter()" style="margin-right:8px; padding:4px 8px;" />
+      <button (click)="refresh()">Refresh</button>
+      <button (click)="onAddTask()">New Task</button>
+    </div>
+  </div>
+  <div class="records-controls">
+    <span class="label">Total Records:</span> <span>{{ totalRecords }}</span>
+    <span class="label">Show per page:</span>
+    <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+      <option *ngFor="let size of [5, 10, 20, 50, 100]" [value]="size">{{size}}</option>
+    </select>
+  </div>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Assigned To</th>
+          <th>Status</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Comments</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of pagedTasks">
+          <td>{{task.assignedTo}}</td>
+          <td>{{task.status}}</td>
+          <td>{{task.dueDate | date}}</td>
+          <td>{{task.priority}}</td>
+          <td>{{task.comments}}</td>
+          <td>
+            <button (click)="onEditTask(task)">Edit</button>
+            <button (click)="onDeleteTask(task)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:center; margin: 12px 0;">
+    <button (click)="prevPage()" [disabled]="page === 1">&lt; Prev</button>
+    <span style="margin: 0 12px;">Page {{page}} of {{totalPages}}</span>
+    <button (click)="nextPage()" [disabled]="page === totalPages">Next &gt;</button>
+  </div>
+  <app-task-form
+    *ngIf="showForm"
+    [task]="selectedTask"
+    [isEdit]="isEdit"
+    (formSubmit)="onFormSubmit()"
+    (cancel)="showForm = false">
+  </app-task-form>
+  <div *ngIf="showDeleteConfirm" class="modal">
+    <div class="modal-content">
+      <h3>Delete</h3>
+      <p>Do you want to delete task {{selectedTask?.assignedTo}}?</p>
+      <button (click)="cancelDelete()">No</button>
+      <button (click)="confirmDelete()">Yes</button>
+    </div>
+  </div>
+</div> 
